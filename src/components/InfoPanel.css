@@ -1,0 +1,161 @@
+.info {
+    display: flex;
+    width: 92%;
+    max-width: 350px;
+
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 100;
+
+    flex-direction: column;
+    gap: 16px;
+}
+
+.info-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+}
+
+.info-controls__info {
+    display: flex;
+    flex-direction: row;
+    min-width: 160px;
+    margin: auto 0;
+    padding: 8px;
+    box-shadow: 0 0 12px 2px #00000022;
+    border-radius: 8px;
+    cursor: help;
+}
+
+.info-controls__item {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.info-controls__text {
+    font-size: 16px;
+    color: #00000066;
+    font-weight: bold;
+}
+
+.info-controls__button {
+    height: 58px;
+    width: 58px;
+    border-radius: 64px;
+    background-color: rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.info-controls__inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.info-controls__inner:hover {
+    width: 44px;
+    height: 44px;
+    border-radius: 24px;
+    background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+.info-controls__inner:active {
+    background-color: rgba(255, 255, 255, 0.10);
+    opacity: 0.75;
+}
+
+.info-panel {
+    background-color: white;
+    min-height: 60px;
+    /* magic number 98 - gets it inline with hide button above */
+    width: 98%;
+
+    padding: 8px 0;
+
+    border-left-style: solid;
+    border-left-width: 8px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+
+    box-shadow: 2px 2px 8px 4px #00000022;
+}
+
+.info-panel__node {
+    padding: 0 16px;
+    margin: auto;
+}
+
+.node {
+    height: 18px;
+    width: 18px;
+    border-radius: 18px;
+    box-shadow: 2px 2px 1px #00000033;
+}
+
+.info-panel__text {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.title {
+    display: flex;
+    color: #000080;
+    font-size: 16px;
+    font-weight: normal;
+    text-align: left;
+}
+
+.info-panel__description {
+    display: flex;
+    flex-direction: column;
+}
+
+h6 {
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+.enter {
+    animation: slideFadeIn 500ms ease-out forwards;
+}
+
+.exit {
+    animation: slideFadeOut 500ms ease-in forwards;
+}
+
+@keyframes slideFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideFadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

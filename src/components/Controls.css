@@ -1,0 +1,106 @@
+.controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 16px;
+}
+
+.controls__button-groups {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.playback-button {
+    height: 58px;
+    width: 58px;
+    border-radius: 64px;
+    background-color: rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.playback-button__inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.playback-button__enabled:hover {
+    width: 44px;
+    height: 44px;
+    border-radius: 24px;
+    background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+.playback-button__enabled:active {
+    background-color: rgba(255, 255, 255, 0.10);
+    opacity: 0.75;
+}
+
+.controls-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.controls-fading-in {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 250ms ease;
+}
+
+.controls-fading-out {
+    opacity: 0;
+    pointer-events: auto;
+    transition: opacity 2500ms ease;
+}
+
+.controls-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@-moz-keyframes spin {
+    from {
+        -moz-transform: rotate(0deg);
+    }
+    to {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.play-button__spin {
+    animation-name: spin;
+    animation-duration: 7000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    border-radius: 24px;
+}
+
+.controls__orbit {
+    border-radius: 24px;
+}
