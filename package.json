@@ -28,7 +28,8 @@
   "files": [
     "dist",
     "README.md",
-    "package.json"
+    "package.json",
+    "tsconfig.build.json"
   ],
   "peerDependencies": {
     "react": "^19.2.4",
