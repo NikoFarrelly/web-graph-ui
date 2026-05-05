@@ -16,5 +16,6 @@
     "noEmit": false,
     "allowImportingTsExtensions": true
   },
-  "types": ["vite"],
+  "types": ["vite", "src/web-graph-ui.d.ts"],
+  "files": ["src/"]
 }
