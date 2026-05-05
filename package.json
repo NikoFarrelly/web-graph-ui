@@ -15,6 +15,7 @@
   },
   "scripts": {
     "dev": "vite --host",
+    "prepare": "vite build",
     "start": "vite",
     "build": "vite build",
     "lint": "eslint .",
