@@ -17,6 +17,4 @@
     "allowImportingTsExtensions": true
   },
   "types": ["vite"],
-  "files": ["src/index.tsx"],
-  "exclude": ["src/components/*.*"]
 }
