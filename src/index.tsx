@@ -1,1 +1,1 @@
-export {FarrellyGraph} from "./components/FarrellyGraph";
+export {FarrellyGraph, type FarrellyGraphProps} from './components/FarrellyGraph';

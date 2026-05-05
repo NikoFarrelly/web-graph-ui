@@ -96,6 +96,7 @@ export const useGraph = (
       setTimeout(() => setGraphData(graphQueue[count]), nodeInterval / 2);
     }
 
+    // @ts-ignore TODO resolve tsconfig.build.json error
     intervalRef.current = setInterval(() => {
       // finished graph
       if (count === countMax) {
@@ -124,6 +125,7 @@ export const useGraph = (
     const currentPos = graphRef.current.camera().position;
     angleOrbitRef.current = Math.atan2(currentPos.x, currentPos.z);
 
+    // @ts-ignore TODO resolve tsconfig.build.json error
     orbitRef.current = setInterval(() => {
       if (graphRef.current) {
         graphRef.current.cameraPosition({
