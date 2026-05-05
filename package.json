@@ -26,7 +26,7 @@
     "typescript": "tsc --noEmit"
   },
   "files": [
-    "dist",
+    "dist/",
     "README.md",
     "package.json",
     "tsconfig.build.json"
