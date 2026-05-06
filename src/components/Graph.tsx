@@ -5,7 +5,7 @@ import ForceGraph3D, {
   type NodeObject,
 } from 'react-force-graph-3d';
 
-import type {WebNode} from '../types.ts';
+import type {FarrellyGraphConfig, WebNode} from '../types.ts';
 import './Graph.css';
 
 const onNodeClick = (
@@ -58,10 +58,10 @@ const graphLinkConfig = (isPaused: boolean) => ({
   linkOpacity: 0.5,
 });
 
-const reactForceConfig = {
+const reactForceConfig = (config: FarrellyGraphConfig) => ({
   // dimensions
-  width: window.innerWidth,
-  height: window.innerHeight,
+  width: config.width,
+  height: config.height,
   // style
   backgroundColor: '#FF99DD66',
   // graph look
@@ -75,24 +75,26 @@ const reactForceConfig = {
   // UI & interaction
   showNavInfo: false,
   enableNavigationControls: true,
-};
+});
 
-const getGraphConfig = (isPaused: boolean) => ({
+const getGraphConfig = (isPaused: boolean, config: FarrellyGraphConfig) => ({
   ...graphNodeConfig,
   ...graphLinkConfig(isPaused),
-  ...reactForceConfig,
+  ...reactForceConfig(config),
 });
 
 export const Graph = ({
   graphData,
   ref,
   isPaused,
+  config,
 }: {
   graphData: GraphData | undefined;
   ref: RefObject<ForceGraphMethods | undefined>;
   isPaused: boolean;
+  config: FarrellyGraphConfig;
 }) => {
-  const config = getGraphConfig(isPaused);
+  const graphConfig = getGraphConfig(isPaused, config);
   // TODO non-reactive code, move out of useEffect.
   useEffect(() => {
     if (ref?.current) {
@@ -110,7 +112,7 @@ export const Graph = ({
         className={'graph'}
         // @ts-ignore TODO
         ref={ref}
-        {...config}
+        {...graphConfig}
       />
     </div>
   );

@@ -25,3 +25,8 @@ export interface WCWebNode extends WebNode {
 
 export type PlayPause = 'Pause' | 'Play';
 export type PlaybackState = PlayPause | 'Restart';
+
+export type FarrellyGraphConfig = {
+  width: number;
+  height: number;
+}

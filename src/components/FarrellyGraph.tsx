@@ -6,7 +6,7 @@ import type {ForceGraphMethods, GraphData, NodeObject} from 'react-force-graph-3
 
 import {ADD_NODE_SPEED, FADE_TIME} from '../constants.ts';
 import {useGraph} from '../hooks/useGraph.ts';
-import type {GraphQueue, LinkNode, WCWebNode, WebNode} from '../types.ts';
+import type {FarrellyGraphConfig, GraphQueue, LinkNode, WCWebNode, WebNode} from '../types.ts';
 import {buildGraphQueue} from '../utils.ts';
 import {Controls} from './Controls.tsx';
 import {Graph} from './Graph.tsx';
@@ -16,12 +16,17 @@ export interface FarrellyGraphProps {
   graphData: GraphData<WebNode, LinkNode>;
   beginPlayback: boolean;
   playbackFrom: 'start' | 'end';
+  config?: FarrellyGraphConfig;
 }
 
 export const FarrellyGraph = ({
   graphData,
   beginPlayback = false,
   playbackFrom,
+  config = {
+    width: window.innerWidth,
+    height: window.innerHeight,
+  },
 }: FarrellyGraphProps) => {
   const graphQueue: GraphQueue = buildGraphQueue(graphData, {start: '#FF99DD', stop: '#9AD7FD'});
   const visibilityRef = useRef<HTMLDivElement | null>(null);
@@ -41,6 +46,7 @@ export const FarrellyGraph = ({
         graphData={beginPlayback ? currGraphData : undefined}
         ref={graphRef}
         isPaused={playbackState === 'Pause'}
+        config={config}
       />
       <Controls
         orbitToggle={orbitToggle}
