@@ -152,14 +152,14 @@ p {
         transform: translateY(50px);
     }
     to {
-        opacity: 1;
+        opacity: 0.75;
         transform: translateY(0);
     }
 }
 
 @keyframes slideFadeOut {
     from {
-        opacity: 1;
+        opacity: 0.75;
     }
     to {
         opacity: 0;
