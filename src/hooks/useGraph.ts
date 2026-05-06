@@ -16,8 +16,6 @@ const ORBIT_DELAY = 500;
 
 let count: number = 0;
 
-// TODO - When clicking pause the graphNode 'bumps' again, like another interval has fired.
-
 export const useGraph = (
   graphQueue: GraphQueue,
   graphRef: RefObject<ForceGraphMethods | undefined>,
