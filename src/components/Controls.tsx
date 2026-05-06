@@ -87,7 +87,6 @@ interface PlaybackButtonProps {
   className?: string;
   disabled?: boolean;
   title?: string;
-  dimensions?: {width: number; height: number};
 }
 
 const PlaybackButton = ({
@@ -98,7 +97,6 @@ const PlaybackButton = ({
   className,
   disabled = false,
   title,
-  dimensions = {width: 30, height: 30},
 }: PlaybackButtonProps) => {
   return (
     <button className={'playback-button'} onClick={onClick} title={title} disabled={disabled}>
@@ -107,7 +105,6 @@ const PlaybackButton = ({
           className={`playback-button__img ${className ?? ''} ${spin ? 'play-button__spin' : ''}`}
           src={imgPath}
           alt={altText}
-          {...dimensions}
         />
       </div>
     </button>
