@@ -8,15 +8,13 @@ export default defineConfig({
   plugins: [
     react(),
     babel({presets: [reactCompilerPreset()]}),
-    dts({tsconfigPath: './tsconfig.build.json'}),
+    dts({tsconfigPath: './tsconfig.json', bundleTypes: true}),
   ],
   build: {
-    outDir: 'dist',
-    emptyOutDir: false,
     lib: {
       entry: resolve(__dirname, 'src/index.tsx'),
       name: 'WebGraphUI',
-      formats: ['es', 'cjs'],
+      formats: ['es'],
       fileName: format => `web-graph-ui.${format}.js`,
     },
     rolldownOptions: {
