@@ -6,6 +6,7 @@ import type {ForceGraphMethods, GraphData, NodeObject} from 'react-force-graph-3
 
 import {ADD_NODE_SPEED, FADE_TIME} from '../constants.ts';
 import {useGraph} from '../hooks/useGraph.ts';
+import {useWindowSize} from '../hooks/useWindowSize.ts';
 import type {FarrellyGraphConfig, GraphQueue, LinkNode, WCWebNode, WebNode} from '../types.ts';
 import {buildGraphQueue} from '../utils.ts';
 import {Controls} from './Controls.tsx';
@@ -31,6 +32,10 @@ export const FarrellyGraph = ({
   const graphQueue: GraphQueue = buildGraphQueue(graphData, {start: '#FF99DD', stop: '#9AD7FD'});
   const visibilityRef = useRef<HTMLDivElement | null>(null);
 
+  const maxDimensions =
+    config?.height && config?.width ? {height: config.height, width: config.width} : undefined;
+  const dimensions = useWindowSize(maxDimensions);
+
   const graphRef = useRef<ForceGraphMethods>(undefined);
   const nodeSpeedMS = ADD_NODE_SPEED + FADE_TIME;
   const {currGraphData, currGraphIndex, orbitToggle, playbackState, playbackToggle, isOrbiting} =
@@ -42,12 +47,14 @@ export const FarrellyGraph = ({
   return (
     <div ref={visibilityRef}>
       <InfoPanel node={currNode} depth={currDepth} index={currGraphIndex} nodeSpeed={nodeSpeedMS} />
-      <Graph
-        graphData={beginPlayback ? currGraphData : undefined}
-        ref={graphRef}
-        isPaused={playbackState === 'Pause'}
-        config={config}
-      />
+      {dimensions && (
+        <Graph
+          graphData={beginPlayback ? currGraphData : undefined}
+          ref={graphRef}
+          isPaused={playbackState === 'Pause'}
+          config={dimensions}
+        />
+      )}
       <Controls
         orbitToggle={orbitToggle}
         visibilityRef={visibilityRef}
