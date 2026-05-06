@@ -1,5 +1,9 @@
 import {type RefObject} from 'react';
 
+import PauseIcon from '../assets/Pause.png';
+import RestartIcon from '../assets/Restart.png';
+import PlayIcon from '../assets/Play.png';
+import StopIcon from '../assets/Stop.png';
 import {useControls} from '../hooks/useControls.ts';
 import {useControlsVisibility} from '../hooks/useControlsVisibility.ts';
 import type {VisibilityConfig} from '../stores/createVisibilityStore.ts';
@@ -19,14 +23,15 @@ const getPlaybackButton = (
   switch (playbackState) {
     // currently paused -> play
     case 'Pause':
-      return {imgPath: '/Play.png', altText: 'Play', title: 'Play'};
+      return {imgPath: PauseIcon, altText: 'Play', title: 'Play'};
     // current restart -> restart
     case 'Restart':
-      return {imgPath: '/Restart.png', altText: 'Restart', title: 'Restart'};
+      return {imgPath: RestartIcon, altText: 'Restart', title: 'Restart'};
     default:
     // currently playing -> pause
+    // eslint-disable-next-line no-fallthrough
     case 'Play':
-      return {imgPath: '/Pause.png', altText: 'Pause', title: 'Pause'};
+      return {imgPath: PlayIcon, altText: 'Pause', title: 'Pause'};
   }
 };
 
@@ -62,7 +67,7 @@ export const Controls = ({
 
         <PlaybackButton
           onClick={onOrbitToggle}
-          imgPath={'/Stop.png'}
+          imgPath={StopIcon}
           altText={'Orbit'}
           className={'controls__orbit'}
           disabled={playbackState === 'Play'}

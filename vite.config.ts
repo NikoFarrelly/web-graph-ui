@@ -1,14 +1,14 @@
-import babel from '@rolldown/plugin-babel';
-import react, {reactCompilerPreset} from '@vitejs/plugin-react';
+import react from '@vitejs/plugin-react';
 import {resolve} from 'path';
 import dts from 'unplugin-dts/vite';
 import {defineConfig} from 'vite';
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 
 export default defineConfig({
   plugins: [
     react(),
-    babel({presets: [reactCompilerPreset()]}),
     dts({tsconfigPath: './tsconfig.json', bundleTypes: true}),
+    cssInjectedByJsPlugin(),
   ],
   build: {
     lib: {
@@ -18,8 +18,19 @@ export default defineConfig({
       fileName: format => `web-graph-ui.${format}.js`,
     },
     rolldownOptions: {
-      external: ['react', 'react-dom', 'react-force-graph-3d'],
+      external: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        'react-force-graph-3d',
+        'three-forcegraph',
+        '3d-force-graph',
+        'three',
+        'd3-force-3d',
+      ],
       output: {
+        format: 'es',
+        minifyInternalExports: true,
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',

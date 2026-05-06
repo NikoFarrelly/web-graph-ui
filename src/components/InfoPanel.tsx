@@ -1,6 +1,8 @@
 import {useEffect, useState} from 'react';
 import type {NodeObject} from 'react-force-graph-3d';
 
+import NotificationsEnabled from "../assets/Notifications.png?inline";
+import NotificationsDisabled from '../assets/WhiteNotifications.png?inline';
 import {FADE_TIME_CSS} from '../constants.ts';
 import type {WCWebNode} from '../types.ts';
 import './InfoPanel.css';
@@ -46,7 +48,7 @@ export const InfoPanel = ({
         >
           <div className={'info-controls__inner'}>
             <img
-              src={isVisible ? '/Notifications.png' : '/WhiteNotifications.png'}
+              src={isVisible ? NotificationsEnabled : NotificationsDisabled}
               alt={'Notifications'}
               width={30}
               height={30}
