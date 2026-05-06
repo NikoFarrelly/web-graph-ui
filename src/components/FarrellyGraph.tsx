@@ -34,7 +34,7 @@ export const FarrellyGraph = ({
 
   const maxDimensions =
     config?.height && config?.width ? {height: config.height, width: config.width} : undefined;
-  const dimensions = useWindowSize(maxDimensions);
+  const dimensions = useWindowSize(32, maxDimensions);
 
   const graphRef = useRef<ForceGraphMethods>(undefined);
   const nodeSpeedMS = ADD_NODE_SPEED + FADE_TIME;

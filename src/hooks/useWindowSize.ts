@@ -5,7 +5,7 @@ export type WindowSize = {
   height: number;
 };
 
-export function useWindowSize(maxWindowSize?: WindowSize): WindowSize | undefined {
+export function useWindowSize(padding: number, maxWindowSize?: WindowSize): WindowSize | undefined {
   const [windowSize, setWindowSize] = useState<WindowSize>();
 
   // TODO make this more reactive, potentially shift to using ref?
@@ -18,8 +18,8 @@ export function useWindowSize(maxWindowSize?: WindowSize): WindowSize | undefine
       // initial set windowSize set
       if (!hasDefinedMax && !windowSize) {
         return setWindowSize({
-          width: window.innerWidth,
-          height: window.innerHeight,
+          width: window.innerWidth - padding,
+          height: window.innerHeight - padding,
         });
       } else if (!windowSize && hasDefinedMax) {
         const width =
@@ -27,8 +27,8 @@ export function useWindowSize(maxWindowSize?: WindowSize): WindowSize | undefine
         const height =
           window.innerHeight > maxWindowSize?.height ? maxWindowSize.height : window.innerHeight;
         return setWindowSize({
-          width,
-          height,
+          width: width - padding,
+          height: height - padding,
         });
       }
 
@@ -38,13 +38,13 @@ export function useWindowSize(maxWindowSize?: WindowSize): WindowSize | undefine
         // if outside max bounds, return early.
         if (hasMaxHeight || hasMaxWidth) return;
         setWindowSize({
-          width: window.innerWidth,
-          height: window.innerHeight,
+          width: window.innerWidth - padding,
+          height: window.innerHeight - padding,
         });
       } else {
         setWindowSize({
-          width: window.innerWidth,
-          height: window.innerHeight,
+          width: window.innerWidth - padding,
+          height: window.innerHeight - padding,
         });
       }
     }
