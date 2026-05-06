@@ -1,15 +1,20 @@
 .info {
     display: flex;
-    width: 92%;
+    /*width: 92%;*/
     max-width: 350px;
-
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    z-index: 100;
-
+    margin-left: auto;
+    background-color: red;
+    position: relative;
     flex-direction: column;
     gap: 16px;
+}
+
+.info-container {
+
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 100;
 }
 
 .info-controls {
@@ -74,10 +79,11 @@
 .info-panel {
     background-color: white;
     min-height: 60px;
-    /* magic number 98 - gets it inline with hide button above */
-    width: 98%;
+    margin-top: 8px;
+    /* TODO double check how this looks on small devices */
+    width: 300px;
 
-    padding: 8px 0;
+    padding: 8px 4px;
 
     border-left-style: solid;
     border-left-width: 8px;
