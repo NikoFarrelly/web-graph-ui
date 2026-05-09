@@ -44,7 +44,7 @@ export function createVisibilityStore(props: VisibilityConfig): VisibilityStore 
   } = props;
   let currentState: VisibilityState = STATES.VISIBLE;
 
-  let listeners: Set<() => void> = new Set();
+  const listeners: Set<() => void> = new Set();
   let idleTimer: ReturnType<typeof setTimeout> | undefined = undefined;
   let fadeTimer: ReturnType<typeof setTimeout> | undefined = undefined;
   let lastInteraction: number = 0;

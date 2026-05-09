@@ -1,8 +1,9 @@
 import {type RefObject} from 'react';
+import React from 'react';
 
 import PauseIcon from '../assets/Pause.png';
-import RestartIcon from '../assets/Restart.png';
 import PlayIcon from '../assets/Play.png';
+import RestartIcon from '../assets/Restart.png';
 import StopIcon from '../assets/Stop.png';
 import {useControls} from '../hooks/useControls.ts';
 import {useControlsVisibility} from '../hooks/useControlsVisibility.ts';
@@ -80,7 +81,7 @@ export const Controls = ({
 };
 
 interface PlaybackButtonProps {
-  onClick: (e: any) => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   imgPath: string;
   altText: string;
   spin?: boolean;

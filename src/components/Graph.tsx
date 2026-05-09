@@ -99,18 +99,18 @@ export const Graph = ({
   useEffect(() => {
     if (ref?.current) {
       const controls = ref.current.controls();
-      // @ts-ignore prop exists, type for it doesn't.
+      // @ts-expect-error prop exists, type for it doesn't.
       controls.noPan = true;
     }
-  }, []);
+  }, [ref]);
 
   return (
     <div className={'graph'}>
       <ForceGraph3D
-        // @ts-ignore TODO
+        // @ts-expect-error TODO
         graphData={graphData}
         className={'graph'}
-        // @ts-ignore TODO
+        // @ts-expect-error TODO
         ref={ref}
         {...graphConfig}
       />

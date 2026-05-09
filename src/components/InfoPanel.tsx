@@ -74,14 +74,13 @@ const NodeInfoPanel = ({
   nodeSpeed: number;
   isVisible: boolean;
 }) => {
-  const [phase, setPhase] = useState<'enter' | 'exit' | 'hidden'>('enter');
+  const [phase, setPhase] = useState<'enter' | 'exit' | 'hidden'>(!isVisible ? 'hidden' : 'enter');
 
   useEffect(() => {
-    if (!isVisible) return setPhase('hidden');
-
+    if (phase === 'hidden') return;
     const exitTimer = setTimeout(() => setPhase('exit'), nodeSpeed - FADE_TIME_CSS);
     return () => clearTimeout(exitTimer);
-  }, [isVisible]);
+  }, [isVisible, nodeSpeed, phase]);
 
   if (phase === 'hidden') return null;
 

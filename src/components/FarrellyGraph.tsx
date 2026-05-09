@@ -41,7 +41,7 @@ export const FarrellyGraph = ({
   const {currGraphData, currGraphIndex, orbitToggle, playbackState, playbackToggle, isOrbiting} =
     useGraph(graphQueue, graphRef, nodeSpeedMS, beginPlayback, playbackFrom);
   const currNode: NodeObject<WCWebNode> | undefined =
-    currGraphData?.nodes?.[currGraphIndex] ?? undefined;
+    currGraphData?.nodes?.[currGraphIndex-1] ?? undefined;
   const currDepth = currGraphData?.depth ? currGraphData.depth + 1 : 1;
 
   return (

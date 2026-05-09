@@ -16,6 +16,9 @@ const ORBIT_DELAY = 500;
 
 let count: number = 0;
 
+// When pressing restart the resulting graphNodes are broken & dispersed.
+// Not sure what is different when restarting, it should effectively just start from the beginning again.
+
 export const useGraph = (
   graphQueue: GraphQueue,
   graphRef: RefObject<ForceGraphMethods | undefined>,
@@ -33,7 +36,7 @@ export const useGraph = (
     playbackFrom === 'end' ? graphQueue[graphQueue.length - 1] : undefined,
   );
   const countMax = graphQueue.length - 1;
-  const currGraphIndex = !!graphData?.nodes ? graphData.nodes.length - 1 : 0;
+  const currGraphIndex = graphData?.nodes ? graphData.nodes.length : 0;
   // playback
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -50,6 +53,19 @@ export const useGraph = (
     if (isMounted) setIsRunning(true);
   }, [isMounted]);
 
+  // isRunning is the culprit here.
+  // When it's set within restart, or within `handlePause` it causes the graph to disperse.
+  // We should move to using a reducer and states.
+  // - Playing state
+  //    - nodes are added
+  //    - can pause.
+  // - Paused State
+  //    - nodes aren't added, orbiting occurs.
+  //    - can play.
+  // - Finished/Restart state
+  //    - No nodes left to add, orbiting occurs, restart available.
+  //    - can restart.
+
   // handle running
   useEffect(() => {
     if (!beginPlayback || !isRunning) return;
@@ -65,7 +81,7 @@ export const useGraph = (
   useEffect(() => {
     if (isPaused) {
       handlePause();
-    } else if (!isPaused) {
+    } else if (!isPaused && isOrbiting) {
       handleOrbitStop();
     }
   }, [isPaused]);
@@ -148,9 +164,8 @@ export const useGraph = (
 
   const handleRestart = () => {
     count = 0;
-    setGraphData(graphQueue[0]);
+    setGraphData(undefined);
     setIsFinished(false);
-    handleOrbitStop();
     setIsPaused(false);
     setIsRunning(true);
   };

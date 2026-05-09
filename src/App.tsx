@@ -7,7 +7,7 @@ import {FarrellyGraph} from './components/FarrellyGraph.tsx';
 import {dataset} from './dataset.ts';
 
 const App = () => {
-  const [beginPlayback, setBeginPlayback] = useState(false);
+  const [beginPlayback, setBeginPlayback] = useState(true);
   const onBeginPlayback = () => {
     if (!beginPlayback) setBeginPlayback(true);
   };
@@ -27,7 +27,12 @@ const App = () => {
         }}
         onClick={onBeginPlayback}
       />
-      <FarrellyGraph graphData={dataset} beginPlayback={beginPlayback} playbackFrom={'start'} />
+      <FarrellyGraph
+        graphData={dataset}
+        beginPlayback={beginPlayback}
+        playbackFrom={'start'}
+        config={{width: 800, height: 600}}
+      />
     </div>
   );
 };

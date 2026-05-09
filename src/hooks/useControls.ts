@@ -1,15 +1,15 @@
-import {useCallback} from 'react';
+import React, {useCallback} from 'react';
 
 export const useControls = (playbackToggle: () => void, orbitToggle: () => void) => {
   const onPlaybackToggle = useCallback(
-    (e: any) => {
+    (e: React.MouseEvent<HTMLButtonElement>) => {
       if (e) e.preventDefault();
       playbackToggle();
     },
     [playbackToggle],
   );
 
-  const onOrbitToggle = (e: any) => {
+  const onOrbitToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e) e.preventDefault();
     orbitToggle();
   };
