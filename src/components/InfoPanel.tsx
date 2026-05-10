@@ -33,8 +33,8 @@ export const InfoPanel = ({
         <div className="info-controls">
           {index >= 0 && depth >= 0 && (
             <div className={'info-controls__info'}>
-              <div className="info-controls__item" title={`Node count: ${index + 1}`}>
-                <p className={'info-controls__text'}>Nodes: {index + 1}</p>
+              <div className="info-controls__item" title={`Node count: ${index}`}>
+                <p className={'info-controls__text'}>Nodes: {index}</p>
               </div>
               <div className="info-controls__item" title={`Graph depth: ${depth}`}>
                 <p className={'info-controls__text'}>Depth: {depth}</p>

@@ -1,5 +1,4 @@
-import {type RefObject} from 'react';
-import React from 'react';
+import React, {type RefObject} from 'react';
 
 import PauseIcon from '../assets/Pause.png';
 import PlayIcon from '../assets/Play.png';
@@ -8,7 +7,7 @@ import StopIcon from '../assets/Stop.png';
 import {useControls} from '../hooks/useControls.ts';
 import {useControlsVisibility} from '../hooks/useControlsVisibility.ts';
 import type {VisibilityConfig} from '../stores/createVisibilityStore.ts';
-import type {PlaybackState} from '../types.ts';
+import {type Playback, PlaybackEnum} from '../types.ts';
 import './Controls.css';
 
 const VISIBILITY_CONFIG: VisibilityConfig = {
@@ -19,20 +18,20 @@ const VISIBILITY_CONFIG: VisibilityConfig = {
 };
 
 const getPlaybackButton = (
-  playbackState: PlaybackState,
+  playbackState: Playback,
 ): {imgPath: string; altText: string; title: string} => {
   switch (playbackState) {
     // currently paused -> play
-    case 'Pause':
-      return {imgPath: PauseIcon, altText: 'Play', title: 'Play'};
+    case PlaybackEnum.Paused:
+      return {imgPath: PlayIcon, altText: 'Play', title: 'Play'};
     // current restart -> restart
-    case 'Restart':
+    case PlaybackEnum.Finished:
       return {imgPath: RestartIcon, altText: 'Restart', title: 'Restart'};
     default:
     // currently playing -> pause
     // eslint-disable-next-line no-fallthrough
-    case 'Play':
-      return {imgPath: PlayIcon, altText: 'Pause', title: 'Pause'};
+    case PlaybackEnum.Playing:
+      return {imgPath: PauseIcon, altText: 'Pause', title: 'Pause'};
   }
 };
 
@@ -43,7 +42,7 @@ export const Controls = ({
   visibilityRef,
   isOrbiting,
 }: {
-  playbackState: PlaybackState;
+  playbackState: Playback;
   playbackToggle: () => void;
   orbitToggle: () => void;
   visibilityRef: RefObject<HTMLDivElement | null>;
@@ -54,8 +53,8 @@ export const Controls = ({
   const {imgPath, altText, title} = getPlaybackButton(playbackState);
 
   const orbitingTitle = isOrbiting ? 'Stop orbit' : 'Start orbit';
-  const orbitTitle = playbackState === 'Play' ? 'Orbit disabled during playback' : orbitingTitle;
-
+  const orbitTitle =
+    playbackState === PlaybackEnum.Playing ? 'Orbit disabled during playback' : orbitingTitle;
   return (
     <div className={`controls ${visibilityClass}`} ref={visibilityRef} tabIndex={0}>
       <div className={'controls__button-groups'}>
@@ -71,7 +70,7 @@ export const Controls = ({
           imgPath={StopIcon}
           altText={'Orbit'}
           className={'controls__orbit'}
-          disabled={playbackState === 'Play'}
+          disabled={playbackState === PlaybackEnum.Playing}
           spin={isOrbiting}
           title={orbitTitle}
         />

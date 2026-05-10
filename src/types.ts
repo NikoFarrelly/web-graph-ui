@@ -23,10 +23,19 @@ export interface WCWebNode extends WebNode {
   color: string;
 }
 
-export type PlayPause = 'Pause' | 'Play';
-export type PlaybackState = PlayPause | 'Restart';
+export enum PlaybackEnum {
+  Playing = 'Playing',
+  Paused = 'Paused',
+  Finished = 'Finished',
+}
+export type Playback = PlaybackEnum.Playing | PlaybackEnum.Paused | PlaybackEnum.Finished;
+export enum OrbitEnum {
+  Orbiting = 'Orbiting',
+  Stationary = 'Stationary',
+}
+export type Orbit = OrbitEnum.Orbiting | OrbitEnum.Stationary;
 
 export type FarrellyGraphConfig = {
   width: number;
   height: number;
-}
+};

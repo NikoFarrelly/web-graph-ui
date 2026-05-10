@@ -1,8 +1,14 @@
 import {type RefObject, useCallback, useEffect, useRef, useState} from 'react';
 import type {ForceGraphMethods} from 'react-force-graph-3d';
 
-import type {GraphQueue, GraphQueueItem, PlaybackState, PlayPause} from '../types.ts';
-import {useIsMounted} from './useIsMounted.ts';
+import {
+  type GraphQueue,
+  type GraphQueueItem,
+  type Orbit,
+  OrbitEnum,
+  type Playback,
+  PlaybackEnum,
+} from '../types.ts';
 
 const SCREEN_HEIGHT = window.innerHeight;
 const SCREEN_WIDTH = window.innerWidth;
@@ -15,9 +21,8 @@ const DISTANCE = isLandscape ? SCREEN_HEIGHT / 2.3 : SCREEN_WIDTH / 5; //450;
 const ORBIT_DELAY = 500;
 
 let count: number = 0;
-
-// When pressing restart the resulting graphNodes are broken & dispersed.
-// Not sure what is different when restarting, it should effectively just start from the beginning again.
+let hasMounted: boolean = false;
+let shouldPlay: boolean = true;
 
 export const useGraph = (
   graphQueue: GraphQueue,
@@ -27,119 +32,26 @@ export const useGraph = (
   playbackFrom: 'start' | 'end',
 ) => {
   // ref + setup
-  const isMounted = useIsMounted();
   const intervalRef = useRef<number>(0);
   const orbitRef = useRef<number>(0);
   const angleOrbitRef = useRef<number>(0);
   // data
-  const [graphData, setGraphData] = useState<GraphQueueItem | undefined>(
-    playbackFrom === 'end' ? graphQueue[graphQueue.length - 1] : undefined,
+  const [graphData, setGraphData] = useState<GraphQueueItem>(
+    playbackFrom === 'end' ? graphQueue[graphQueue.length - 1] : graphQueue[0],
   );
   const countMax = graphQueue.length - 1;
   const currGraphIndex = graphData?.nodes ? graphData.nodes.length : 0;
-  // playback
-  const [isRunning, setIsRunning] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const [isFinished, setIsFinished] = useState(false);
-  const [timesFinished, setTimesFinished] = useState(0);
-  // playback: derived state
-  const playPauseState: PlayPause = isPaused ? 'Pause' : 'Play';
-  const playbackState: PlaybackState = isFinished ? 'Restart' : playPauseState;
-  // behaviour
-  const [isOrbiting, setIsOrbiting] = useState(false);
+  const [playback, setPlayback] = useState<Playback>(PlaybackEnum.Paused);
+  const [orbit, setOrbit] = useState<Orbit>(OrbitEnum.Stationary);
 
-  // init & kickoff
-  useEffect(() => {
-    if (isMounted) setIsRunning(true);
-  }, [isMounted]);
-
-  // isRunning is the culprit here.
-  // When it's set within restart, or within `handlePause` it causes the graph to disperse.
-  // We should move to using a reducer and states.
-  // - Playing state
-  //    - nodes are added
-  //    - can pause.
-  // - Paused State
-  //    - nodes aren't added, orbiting occurs.
-  //    - can play.
-  // - Finished/Restart state
-  //    - No nodes left to add, orbiting occurs, restart available.
-  //    - can restart.
-
-  // handle running
-  useEffect(() => {
-    if (!beginPlayback || !isRunning) return;
-    // playbackFrom doesn't change, but we'll want to restart if they've finished. Hence times finished
-    if (playbackFrom === 'start' || (playbackFrom === 'end' && timesFinished > 0)) {
-      return handleStart();
-    } else if (playbackFrom === 'end') {
-      setIsFinished(true);
-    }
-  }, [isRunning, beginPlayback, playbackFrom]);
-
-  // when paused
-  useEffect(() => {
-    if (isPaused) {
-      handlePause();
-    } else if (!isPaused && isOrbiting) {
-      handleOrbitStop();
-    }
-  }, [isPaused]);
-
-  // when finished
-  useEffect(() => {
-    if (isFinished) {
-      setIsPaused(true);
-      setTimesFinished(prev => prev + 1);
-      delayedOrbit();
-      // if 'stopped', check index then push to end.
-      if (count !== currGraphIndex) {
-        setGraphData(graphQueue[currGraphIndex]);
-        count = currGraphIndex;
-      }
-    }
-  }, [isFinished]);
-
-  const handleStart = () => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    if (isOrbiting) handleOrbitStop();
-    if (isPaused) setIsPaused(false);
-    if (isFinished) setIsFinished(false);
-    // starting fresh, set initial data. Restart does this itself.
-    if (!graphData) {
-      setTimeout(() => setGraphData(graphQueue[count]), nodeInterval / 2);
-    }
-
-    // @ts-ignore TODO resolve tsconfig.build.json error
-    intervalRef.current = setInterval(() => {
-      // finished graph
-      if (count === countMax) {
-        setIsFinished(true);
-      } else if (count < countMax) {
-        setGraphData(graphQueue[count]);
-        count++;
-      }
-    }, nodeInterval);
-  };
-
-  const handlePause = () => {
-    clearInterval(intervalRef.current);
-    if (isRunning) setIsRunning(false);
-  };
-
-  const handleOrbitStart = () => {
-    orbit();
-  };
-
-  const orbit = () => {
-    if (!isOrbiting) setIsOrbiting(true);
+  const orbiting = useCallback(() => {
     if (!graphRef.current) return;
 
     // if the graph has been moved, grab it's updated pos & translate for x/z
     const currentPos = graphRef.current.camera().position;
     angleOrbitRef.current = Math.atan2(currentPos.x, currentPos.z);
 
-    // @ts-ignore TODO resolve tsconfig.build.json error
+    // @ts-expect-error TODO resolve tsconfig error
     orbitRef.current = setInterval(() => {
       if (graphRef.current) {
         graphRef.current.cameraPosition({
@@ -149,54 +61,108 @@ export const useGraph = (
         angleOrbitRef.current += Math.PI / 300;
       }
     }, 10);
+    setOrbit(OrbitEnum.Orbiting);
+  }, [graphRef]);
+
+  const orbitStationary = () => {
+    if (orbitRef.current) clearInterval(orbitRef.current);
+    setOrbit(OrbitEnum.Stationary);
   };
 
-  const delayedOrbit = () => {
+  const delayedOrbiting = useCallback(() => {
     if (!graphRef.current) return;
     graphRef.current.cameraPosition({z: DISTANCE, y: -50}, undefined, ORBIT_DELAY * 4);
-    setTimeout(() => orbit(), ORBIT_DELAY * 4);
-  };
+    setTimeout(() => orbiting(), ORBIT_DELAY * 4);
+  }, [graphRef, orbiting]);
 
-  const handleOrbitStop = () => {
-    clearInterval(orbitRef.current);
-    if (isOrbiting) setIsOrbiting(false);
-  };
-
-  const handleRestart = () => {
+  const finished = useCallback(() => {
+    clearInterval(intervalRef.current);
+    setPlayback(PlaybackEnum.Finished);
+    shouldPlay = true;
     count = 0;
-    setGraphData(undefined);
-    setIsFinished(false);
-    setIsPaused(false);
-    setIsRunning(true);
-  };
+    delayedOrbiting();
+  }, [delayedOrbiting]);
 
-  const orbitToggle = useCallback(
-    () => (isOrbiting ? handleOrbitStop() : handleOrbitStart()),
-    [isOrbiting],
-  );
+  const playing = useCallback(() => {
+    orbitStationary();
+    setPlayback(PlaybackEnum.Playing);
+
+    if (!shouldPlay) return;
+    // @ts-expect-error TODO resolve this
+    intervalRef.current = setInterval(() => {
+      // adding to graph
+      if (count < countMax) {
+        setGraphData(graphQueue[count]);
+        count++;
+        // finished graph
+      } else if (count === countMax) {
+        finished();
+      }
+    }, nodeInterval);
+    shouldPlay = false;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const paused = useCallback(() => {
+    clearInterval(intervalRef.current);
+    delayedOrbiting();
+    setPlayback(PlaybackEnum.Paused);
+    shouldPlay = true;
+  }, [delayedOrbiting]);
+
+  const restarting = useCallback(() => {
+    clearInterval(angleOrbitRef.current);
+    clearInterval(orbitRef.current);
+    playing();
+  }, [playing]);
 
   /**
    * Provides playback toggle between playback states.
    */
   const playbackToggle = useCallback(() => {
-    if (isFinished) return handleRestart();
-    if (isPaused) {
-      setIsRunning(true);
-      setIsPaused(false);
-      return;
+    // if playing -> paused, paused -> playing, finished -> restart.
+    switch (playback) {
+      case PlaybackEnum.Playing:
+        return paused();
+      case PlaybackEnum.Finished:
+        return restarting();
+      case PlaybackEnum.Paused:
+      default:
+        return playing();
     }
-    // play by default
-    setIsRunning(false);
-    setIsPaused(true);
-    return;
-  }, [isFinished, isPaused]);
+  }, [paused, playback, playing, restarting]);
+
+  const orbitToggle = useCallback(() => {
+    switch (orbit) {
+      case OrbitEnum.Orbiting:
+        return orbitStationary();
+      default:
+      case OrbitEnum.Stationary:
+        return orbiting();
+    }
+  }, [orbit, orbiting]);
+
+  /**
+   * Handles beginning playback.
+   */
+  useEffect(() => {
+    if (!hasMounted && beginPlayback) {
+      if (playbackFrom === 'start') {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        playing();
+      } else if (playbackFrom === 'end') {
+        finished();
+      }
+      hasMounted = true;
+    }
+  }, [beginPlayback, finished, playbackFrom, playing]);
 
   return {
     currGraphData: graphData,
     currGraphIndex,
     orbitToggle,
     playbackToggle,
-    playbackState,
-    isOrbiting,
+    playbackState: playback,
+    isOrbiting: orbit === OrbitEnum.Orbiting,
   };
 };

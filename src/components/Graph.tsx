@@ -66,9 +66,9 @@ const reactForceConfig = (config: FarrellyGraphConfig) => ({
   backgroundColor: '#FF99DD66',
   // graph look
   numDimensions: 3,
-  controlType: 'trackball',
-  dagMode: 'td',
-  dagLevelDistance: 100,
+  // controlType: 'trackball',
+  // dagMode: 'td',
+  // dagLevelDistance: 100,
   // d3AlphaDecay={0.01}
   // d3VelocityDecay={0.25}
   // d3AlphaMin={0.001}
