@@ -55,6 +55,7 @@ export const Controls = ({
   const orbitingTitle = isOrbiting ? 'Stop orbit' : 'Start orbit';
   const orbitTitle =
     playbackState === PlaybackEnum.Playing ? 'Orbit disabled during playback' : orbitingTitle;
+
   return (
     <div className={`controls ${visibilityClass}`} ref={visibilityRef} tabIndex={0}>
       <div className={'controls__button-groups'}>

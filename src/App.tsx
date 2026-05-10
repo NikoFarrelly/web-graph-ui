@@ -7,14 +7,13 @@ import {FarrellyGraph} from './components/FarrellyGraph.tsx';
 import {dataset} from './dataset.ts';
 
 const App = () => {
-  const [beginPlayback, setBeginPlayback] = useState(true);
+  const [beginPlayback, setBeginPlayback] = useState(false);
   const onBeginPlayback = () => {
     if (!beginPlayback) setBeginPlayback(true);
   };
 
   return (
     <div className={'screen'}>
-      {/* Config for data, playback, startPos*/}
       <div
         style={{
           position: 'absolute',

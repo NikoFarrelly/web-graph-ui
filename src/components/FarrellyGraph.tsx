@@ -20,10 +20,6 @@ import {Controls} from './Controls.tsx';
 import {Graph} from './Graph.tsx';
 import {InfoPanel} from './InfoPanel.tsx';
 
-
-
-
-
 export interface FarrellyGraphProps {
   graphData: GraphData<WebNode, LinkNode>;
   beginPlayback: boolean;
@@ -52,12 +48,19 @@ export const FarrellyGraph = ({
   const {currGraphData, currGraphIndex, orbitToggle, playbackState, playbackToggle, isOrbiting} =
     useGraph(graphQueue, graphRef, nodeSpeedMS, beginPlayback, playbackFrom);
   const currNode: NodeObject<WCWebNode> | undefined =
-    currGraphData?.nodes?.[currGraphIndex-1] ?? undefined;
+    currGraphData?.nodes?.[currGraphIndex - 1] ?? undefined;
   const currDepth = currGraphData?.depth ? currGraphData.depth + 1 : 1;
 
   return (
     <div ref={visibilityRef}>
-      <InfoPanel node={currNode} depth={currDepth} index={currGraphIndex} nodeSpeed={nodeSpeedMS} />
+      {beginPlayback && (
+        <InfoPanel
+          node={currNode}
+          depth={currDepth}
+          index={currGraphIndex}
+          nodeSpeed={nodeSpeedMS}
+        />
+      )}
       {dimensions && (
         <Graph
           graphData={beginPlayback ? currGraphData : undefined}
@@ -66,13 +69,15 @@ export const FarrellyGraph = ({
           config={dimensions}
         />
       )}
-      <Controls
-        orbitToggle={orbitToggle}
-        visibilityRef={visibilityRef}
-        playbackState={playbackState}
-        playbackToggle={playbackToggle}
-        isOrbiting={isOrbiting}
-      />
+      {beginPlayback && (
+        <Controls
+          orbitToggle={orbitToggle}
+          visibilityRef={visibilityRef}
+          playbackState={playbackState}
+          playbackToggle={playbackToggle}
+          isOrbiting={isOrbiting}
+        />
+      )}
     </div>
   );
 };
