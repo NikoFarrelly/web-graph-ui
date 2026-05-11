@@ -1,7 +1,7 @@
 /**
  * Combines all components into an exportable graph.
  */
-import {useRef} from 'react';
+import {useEffect, useRef} from 'react';
 import type {ForceGraphMethods, GraphData, NodeObject} from 'react-force-graph-3d';
 
 import {ADD_NODE_SPEED, FADE_TIME} from '../constants.ts';
@@ -26,9 +26,11 @@ export interface FarrellyGraphProps {
   beginPlayback: boolean;
   playbackFrom: 'start' | 'end';
   config?: FarrellyGraphConfig;
+  onReady?: () => void;
 }
 
 const NODE_SPEED_MS = ADD_NODE_SPEED + FADE_TIME;
+let isReady = false;
 
 export const FarrellyGraph = ({
   graphData,
@@ -38,6 +40,7 @@ export const FarrellyGraph = ({
     width: window.innerWidth,
     height: window.innerHeight,
   },
+  onReady,
 }: FarrellyGraphProps) => {
   const graphQueue: GraphQueue = buildGraphQueue(graphData, {start: '#FF99DD', stop: '#9AD7FD'});
 
@@ -52,6 +55,13 @@ export const FarrellyGraph = ({
   const currNode: NodeObject<WCWebNode> | undefined =
     currGraphData?.nodes?.[currGraphIndex - 1] ?? undefined;
   const currDepth = currGraphData?.depth ? currGraphData.depth + 1 : 1;
+
+  useEffect(() => {
+    if (currNode && !isReady && onReady) {
+      onReady();
+      isReady = true;
+    }
+  }, [currNode, onReady]);
 
   return (
     <div {...controlsProps}>
