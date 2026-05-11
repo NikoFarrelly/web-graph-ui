@@ -91,7 +91,7 @@ const NodeInfoPanel = ({
       </div>
 
       <div className={'info-panel__text'}>
-        <p className={'title'}>{node.url}</p>
+        <p className={'info-panel__title'}>{node.url}</p>
       </div>
     </div>
   );

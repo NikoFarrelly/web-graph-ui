@@ -1,21 +1,13 @@
-import React, {type RefObject} from 'react';
+import React, {memo} from 'react';
 
 import PauseIcon from '../assets/Pause.png';
 import PlayIcon from '../assets/Play.png';
 import RestartIcon from '../assets/Restart.png';
 import StopIcon from '../assets/Stop.png';
 import {useControls} from '../hooks/useControls.ts';
-import {useControlsVisibility} from '../hooks/useControlsVisibility.ts';
-import type {VisibilityConfig} from '../stores/createVisibilityStore.ts';
+import type {VisibilityState} from '../hooks/usePlaybackVisibility.ts';
 import {type Playback, PlaybackEnum} from '../types.ts';
 import './Controls.css';
-
-const VISIBILITY_CONFIG: VisibilityConfig = {
-  idleTimeout: 5000,
-  fadeOutDuration: 1500,
-  fadeInDuration: 250,
-  throttleMs: 100,
-};
 
 const getPlaybackButton = (
   playbackState: Playback,
@@ -35,50 +27,51 @@ const getPlaybackButton = (
   }
 };
 
-export const Controls = ({
-  playbackState,
-  playbackToggle,
-  orbitToggle,
-  visibilityRef,
-  isOrbiting,
-}: {
-  playbackState: Playback;
-  playbackToggle: () => void;
-  orbitToggle: () => void;
-  visibilityRef: RefObject<HTMLDivElement | null>;
-  isOrbiting: boolean;
-}) => {
-  const {onPlaybackToggle, onOrbitToggle} = useControls(playbackToggle, orbitToggle);
-  const visibilityClass = useControlsVisibility(visibilityRef, VISIBILITY_CONFIG);
-  const {imgPath, altText, title} = getPlaybackButton(playbackState);
+export const Controls = memo(
+  ({
+    playbackState,
+    playbackToggle,
+    orbitToggle,
+    isOrbiting,
+    controlsState,
+  }: {
+    playbackState: Playback;
+    playbackToggle: () => void;
+    orbitToggle: () => void;
+    isOrbiting: boolean;
+    controlsState: VisibilityState;
+  }) => {
+    const {onPlaybackToggle, onOrbitToggle} = useControls(playbackToggle, orbitToggle);
+    const {imgPath, altText, title} = getPlaybackButton(playbackState);
 
-  const orbitingTitle = isOrbiting ? 'Stop orbit' : 'Start orbit';
-  const orbitTitle =
-    playbackState === PlaybackEnum.Playing ? 'Orbit disabled during playback' : orbitingTitle;
+    const orbitingTitle = isOrbiting ? 'Stop orbit' : 'Start orbit';
+    const orbitTitle =
+      playbackState === PlaybackEnum.Playing ? 'Orbit disabled during playback' : orbitingTitle;
 
-  return (
-    <div className={`controls ${visibilityClass}`} ref={visibilityRef} tabIndex={0}>
-      <div className={'controls__button-groups'}>
-        <PlaybackButton
-          onClick={onPlaybackToggle}
-          imgPath={imgPath}
-          altText={altText}
-          title={title}
-        />
+    return (
+      <div className={`controls ${controlsState}`} tabIndex={-1}>
+        <div className={'controls__button-groups'}>
+          <PlaybackButton
+            onClick={onPlaybackToggle}
+            imgPath={imgPath}
+            altText={altText}
+            title={title}
+          />
 
-        <PlaybackButton
-          onClick={onOrbitToggle}
-          imgPath={StopIcon}
-          altText={'Orbit'}
-          className={'controls__orbit'}
-          disabled={playbackState === PlaybackEnum.Playing}
-          spin={isOrbiting}
-          title={orbitTitle}
-        />
+          <PlaybackButton
+            onClick={onOrbitToggle}
+            imgPath={StopIcon}
+            altText={'Orbit'}
+            className={'controls__orbit'}
+            disabled={playbackState === PlaybackEnum.Playing}
+            spin={isOrbiting}
+            title={orbitTitle}
+          />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  },
+);
 
 interface PlaybackButtonProps {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;

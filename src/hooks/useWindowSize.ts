@@ -5,8 +5,12 @@ export type WindowSize = {
   height: number;
 };
 
-export function useWindowSize(padding: number, maxWindowSize?: WindowSize): WindowSize | undefined {
+export function useWindowSize(
+  padding: {horizontal: number; vertical: number},
+  maxWindowSize?: WindowSize,
+): WindowSize | undefined {
   const [windowSize, setWindowSize] = useState<WindowSize>();
+  const {horizontal, vertical} = padding;
 
   // TODO make this more reactive, potentially shift to using ref?
   useEffect(() => {
@@ -18,8 +22,8 @@ export function useWindowSize(padding: number, maxWindowSize?: WindowSize): Wind
       // initial set windowSize set
       if (!hasDefinedMax && !windowSize) {
         return setWindowSize({
-          width: window.innerWidth - padding,
-          height: window.innerHeight - padding,
+          width: window.innerWidth - horizontal,
+          height: window.innerHeight - vertical,
         });
       } else if (!windowSize && hasDefinedMax) {
         const width =
@@ -27,8 +31,8 @@ export function useWindowSize(padding: number, maxWindowSize?: WindowSize): Wind
         const height =
           window.innerHeight > maxWindowSize?.height ? maxWindowSize.height : window.innerHeight;
         return setWindowSize({
-          width: width - padding,
-          height: height - padding,
+          width: width - horizontal,
+          height: height - vertical,
         });
       }
 
@@ -38,13 +42,13 @@ export function useWindowSize(padding: number, maxWindowSize?: WindowSize): Wind
         // if outside max bounds, return early.
         if (hasMaxHeight || hasMaxWidth) return;
         setWindowSize({
-          width: window.innerWidth - padding,
-          height: window.innerHeight - padding,
+          width: window.innerWidth - horizontal,
+          height: window.innerHeight - vertical,
         });
       } else {
         setWindowSize({
-          width: window.innerWidth - padding,
-          height: window.innerHeight - padding,
+          width: window.innerWidth - horizontal,
+          height: window.innerHeight - vertical,
         });
       }
     }

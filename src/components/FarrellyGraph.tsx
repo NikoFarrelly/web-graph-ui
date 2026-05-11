@@ -6,6 +6,7 @@ import type {ForceGraphMethods, GraphData, NodeObject} from 'react-force-graph-3
 
 import {ADD_NODE_SPEED, FADE_TIME} from '../constants.ts';
 import {useGraph} from '../hooks/useGraph.ts';
+import {usePlaybackVisibility} from '../hooks/usePlaybackVisibility.ts';
 import {useWindowSize} from '../hooks/useWindowSize.ts';
 import {
   type FarrellyGraphConfig,
@@ -27,6 +28,8 @@ export interface FarrellyGraphProps {
   config?: FarrellyGraphConfig;
 }
 
+const NODE_SPEED_MS = ADD_NODE_SPEED + FADE_TIME;
+
 export const FarrellyGraph = ({
   graphData,
   beginPlayback = false,
@@ -37,28 +40,27 @@ export const FarrellyGraph = ({
   },
 }: FarrellyGraphProps) => {
   const graphQueue: GraphQueue = buildGraphQueue(graphData, {start: '#FF99DD', stop: '#9AD7FD'});
-  const visibilityRef = useRef<HTMLDivElement | null>(null);
 
   const maxDimensions =
     config?.height && config?.width ? {height: config.height, width: config.width} : undefined;
-  const dimensions = useWindowSize(32, maxDimensions);
+  const dimensions = useWindowSize({horizontal: 32, vertical: 16}, maxDimensions);
 
   const graphRef = useRef<ForceGraphMethods>(undefined);
-  const nodeSpeedMS = ADD_NODE_SPEED + FADE_TIME;
+  const {controlsState, controlsProps} = usePlaybackVisibility();
   const {currGraphData, currGraphIndex, orbitToggle, playbackState, playbackToggle, isOrbiting} =
-    useGraph(graphQueue, graphRef, nodeSpeedMS, beginPlayback, playbackFrom);
+    useGraph(graphQueue, graphRef, NODE_SPEED_MS, beginPlayback, playbackFrom);
   const currNode: NodeObject<WCWebNode> | undefined =
     currGraphData?.nodes?.[currGraphIndex - 1] ?? undefined;
   const currDepth = currGraphData?.depth ? currGraphData.depth + 1 : 1;
 
   return (
-    <div ref={visibilityRef}>
+    <div {...controlsProps}>
       {beginPlayback && (
         <InfoPanel
           node={currNode}
           depth={currDepth}
           index={currGraphIndex}
-          nodeSpeed={nodeSpeedMS}
+          nodeSpeed={NODE_SPEED_MS}
         />
       )}
       {dimensions && (
@@ -69,15 +71,13 @@ export const FarrellyGraph = ({
           config={dimensions}
         />
       )}
-      {beginPlayback && (
-        <Controls
-          orbitToggle={orbitToggle}
-          visibilityRef={visibilityRef}
-          playbackState={playbackState}
-          playbackToggle={playbackToggle}
-          isOrbiting={isOrbiting}
-        />
-      )}
+      <Controls
+        orbitToggle={orbitToggle}
+        playbackState={playbackState}
+        playbackToggle={playbackToggle}
+        isOrbiting={isOrbiting}
+        controlsState={controlsState}
+      />
     </div>
   );
 };

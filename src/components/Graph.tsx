@@ -32,9 +32,18 @@ const graphNodeConfig = {
   // TODO (need ref passed)
   onNodeClick: onNodeClick,
   nodeLabel: (node: NodeObject<WebNode>) => (
-    <div style={{borderRadius: '8px', display: 'flex', flexDirection: 'column', gap: '8px'}}>
-      <p>{node.url}</p>
-      {/*<p>{node.name}</p>*/}
+    <div
+      style={{
+        minWidth: '50px',
+        width: '100%',
+        borderRadius: '8px',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '4px',
+        opacity: '0.75'
+      }}
+    >
+      <p style={{color: 'white', wordBreak: 'break-all'}}>{node.url}</p>
     </div>
   ),
   // nodeVal: (node: NodeObject<WebNode>) => node.val,

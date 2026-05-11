@@ -112,9 +112,10 @@
     flex: 1;
     justify-content: center;
     align-items: flex-start;
+    word-break: break-all;
 }
 
-.title {
+.info-panel__title {
     display: flex;
     color: #000080;
     font-size: 16px;

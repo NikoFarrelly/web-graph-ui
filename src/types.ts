@@ -1,4 +1,8 @@
-import type {GraphData} from 'react-force-graph-3d';
+import type { GraphData } from 'react-force-graph-3d';
+
+
+
+
 
 export type GraphQueueItem = {
   depth: number;
@@ -39,3 +43,9 @@ export type FarrellyGraphConfig = {
   width: number;
   height: number;
 };
+
+export type VisibilityState =
+  | 'controls-visible'
+  | 'controls-fading-in'
+  | 'controls-fading-out'
+  | 'controls-hidden';
