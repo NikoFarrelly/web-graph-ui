@@ -65,7 +65,7 @@ export const useGraph = (
   }, [graphRef]);
 
   const orbitStationary = () => {
-    if (orbitRef.current) clearInterval(orbitRef.current);
+    clearInterval(orbitRef.current);
     setOrbit(OrbitEnum.Stationary);
   };
 
