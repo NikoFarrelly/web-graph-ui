@@ -1,75 +1,118 @@
-# React + TypeScript + Vite
+# web-graph-ui
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Provides a single component export, [FarrellyGraph](src/components/FarrellyGraph.tsx). Given data and props, a 3D graph
+node (courtesy of react-force-graph) network will be created. Showing the links between nodes in the network.
 
-Currently, two official plugins are available:
+Two playback modes are provided, 'start' and 'end'.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- *start*
+    - first node will be the base URL, i.e thefarrelly.com.
+    - subsequent nodes will be added every 500ms, until all nodes have been represented.
+- *end*
+    - all nodes will be represented immediately
 
-## React Compiler
+## Installation
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+Use your package manager of choice, we use pnpm.
 
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+pnpm add web-graph-ui
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Example usage
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Start mode, begin immediately
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```typescript jsx
+ <FarrellyGraph
+  graphData={dataset}
+  beginPlayback={true}
+  playbackFrom={'start'}
+  config={{width: 640, height: 640}}
+/>
 ```
+
+End mode, begin immediately
+
+```typescript jsx
+ <FarrellyGraph
+  graphData={dataset}
+  beginPlayback={true}
+  playbackFrom={'end'}
+  config={{width: 640, height: 640}}
+/>
+```
+
+However, you may want to delay playback. For example, you could allow the user to choose between 'start' and 'end'.
+
+- To allow the user to choose, provide either playback option ('start' | 'end') and then set `beginPlayback` to true, e.g.
+  
+
+```typescript jsx
+const [playbackOption, setPlaybackOption] = useState<'start' | 'end'>();
+...
+{
+  playbackOption && <FarrellyGraph
+    graphData={dataset}
+    beginPlayback={!!playbackOption}
+    playbackFrom={playbackOption}
+    config={{width: 640, height: 640}}
+  />
+}
+```
+
+## Api reference
+
+----
+
+### Input
+
+| Prop          |             Type             |  Default  | Description                                                                                           | Required |
+|---------------|:----------------------------:|:---------:|-------------------------------------------------------------------------------------------------------|----------|
+| graphData     | GraphData<WebNode, LinkNode> |     -     | Graph node data for each node and it's relations to others. Uses react-force-graph type of same name. | true     |
+| beginPlayback |           boolean            |   false   | Will trigger the initial playback                                                                     | true     |
+| playbackFrom  |      'start', or 'end'       |     -     | Defines playback from first node, or entire network                                                   | true     |
+| config        |     FarrellyGraphConfig      | undefined | Config, can set width/height for the component                                                        | false    |
+| onReady       |          () => void          | undefined | Callback that fires when the component is ready                                                       | false    |
+
+`graphData` example structure
+```json
+{
+  "nodes": [
+    {
+      "url": "https://thefarrelly.com",
+      "name": "/",
+      "id": 1
+    },
+    {
+      "url": "https://thefarrelly.com/posts",
+      "name": "/posts",
+      "id": 2
+    },
+    ...
+  ],
+  "links": [
+    {
+      "source": 1,
+      "target": 2
+    },
+    ...
+  ]
+}
+```
+
+### UI Controls
+
+- Hold click/tap to rotate.
+- Pinch/scroll to zoom.
+- Click/tap playback (bottom left) to pause, play, restart.
+- Click/tap orbit (bottom right) to start, or stop orbit (orbit only during pause/end).
+- Click/tap notifications (top right) to hide, or show node info notifications.
+
+## How to run
+
+1. clone repo.
+2. install dependencies.
+    - `pnpm i`
+3. run dev.
+    - `pnpm dev`, or `pnpm start`

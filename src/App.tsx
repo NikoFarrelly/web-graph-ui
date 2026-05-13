@@ -2,12 +2,16 @@
 
 import {useState} from 'react';
 
+import graphData from '../webGraph.json';
 import './App.css';
 import {FarrellyGraph} from './components/FarrellyGraph.tsx';
-import {dataset} from './dataset.ts';
+
+/**
+ * Used for dev/testing only. FarrellyGraph is the only export from this pkg.
+ */
 
 const App = () => {
-  const [beginPlayback, setBeginPlayback] = useState(false);
+  const [beginPlayback, setBeginPlayback] = useState(true);
   const onBeginPlayback = () => {
     if (!beginPlayback) setBeginPlayback(true);
   };
@@ -27,7 +31,7 @@ const App = () => {
         onClick={onBeginPlayback}
       />
       <FarrellyGraph
-        graphData={dataset}
+        graphData={graphData}
         beginPlayback={beginPlayback}
         playbackFrom={'start'}
         config={{width: 800, height: 600}}
