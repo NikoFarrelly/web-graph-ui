@@ -5,8 +5,7 @@ import PlayIcon from '../assets/Play.png';
 import RestartIcon from '../assets/Restart.png';
 import StopIcon from '../assets/Stop.png';
 import {useControls} from '../hooks/useControls.ts';
-import type {VisibilityState} from '../hooks/usePlaybackVisibility.ts';
-import {type Playback, PlaybackEnum} from '../types.ts';
+import {type Playback, PlaybackEnum, type VisibilityState} from '../types.ts';
 import './Controls.css';
 
 const getPlaybackButton = (
@@ -19,10 +18,9 @@ const getPlaybackButton = (
     // current restart -> restart
     case PlaybackEnum.Finished:
       return {imgPath: RestartIcon, altText: 'Restart', title: 'Restart'};
-    default:
     // currently playing -> pause
-    // eslint-disable-next-line no-fallthrough
     case PlaybackEnum.Playing:
+    default:
       return {imgPath: PauseIcon, altText: 'Pause', title: 'Pause'};
   }
 };
