@@ -1,8 +1,4 @@
-import type { GraphData } from 'react-force-graph-3d';
-
-
-
-
+import type {GraphData} from 'react-force-graph-3d';
 
 export type GraphQueueItem = {
   depth: number;

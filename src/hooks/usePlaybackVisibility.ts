@@ -1,4 +1,5 @@
 import {useState, useRef, useCallback, useMemo, useEffect} from 'react';
+
 import type {VisibilityState} from '../types.ts';
 
 interface UsePlaybackControlsReturn {
@@ -89,7 +90,7 @@ export function usePlaybackVisibility(): UsePlaybackControlsReturn {
         onTouchStart: handleControlsMouseEnter,
         onMouseLeave: handleControlsMouseLeave,
         onTouchEnd: handleControlsMouseLeave,
-        onMouseMove: handleControlsMouseEnter
+        onMouseMove: handleControlsMouseEnter,
       },
     }),
     [controlsState, handleControlsMouseEnter, handleControlsMouseLeave],
