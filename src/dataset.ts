@@ -1,6 +1,12 @@
-import type {GraphData} from 'react-force-graph-3d';
+import type { GraphData } from 'react-force-graph-3d';
 
-import type {LinkNode, WebNode} from './types.ts';
+
+
+import type { LinkNode, WebNode } from './types.ts';
+
+
+
+
 
 export const dataset: GraphData<WebNode, LinkNode> = {
   nodes: [
@@ -12,7 +18,6 @@ export const dataset: GraphData<WebNode, LinkNode> = {
       id: 3,
     },
     {url: 'https://thefarrelly.com/about', name: '/about', id: 4},
-
     {
       url: 'https://thefarrelly.com/projects/farrelly-film',
       name: '/projects/farrelly-film',
@@ -24,169 +29,168 @@ export const dataset: GraphData<WebNode, LinkNode> = {
       id: 6,
     },
     {
-      url: 'https://thefarrelly.com/projects/farrelly-film/privacy-policy',
-      name: '/projects/farrelly-film/privacy-policy',
-      id: 7,
-    },
-    {
-      url: 'https://thefarrelly.com/projects/snipit/privacy-policy',
-      name: '/projects/snipit/privacy-policy',
-      id: 8,
-    },
-    {
       url: 'https://thefarrelly.com/projects/web-graph',
       name: '/projects/web-graph',
-      id: 9,
+      id: 7,
     },
     {
       url: 'https://thefarrelly.com/posts/rss.xml',
       name: '/posts/rss.xml',
-      id: 10,
+      id: 8,
     },
     {
       url: 'https://thefarrelly.com/posts/is-rss-making-a-comeback-tutorial-adding-support',
       name: '/posts/is-rss-making-a-comeback-tutorial-adding-support',
-      id: 11,
+      id: 9,
     },
     {
       url: 'https://thefarrelly.com/posts/nodemailer-and-fastmail-tutorial',
       name: '/posts/nodemailer-and-fastmail-tutorial',
-      id: 12,
+      id: 10,
     },
     {
       url: 'https://thefarrelly.com/posts/could-this-file-be-under-a-hundred-lines',
       name: '/posts/could-this-file-be-under-a-hundred-lines',
-      id: 13,
+      id: 11,
     },
-
     {
       url: 'https://thefarrelly.com/posts/introducing-snipit',
       name: '/posts/introducing-snipit',
-      id: 14,
+      id: 12,
     },
     {
       url: 'https://thefarrelly.com/posts/farrellyfilm-case-study-from-mvp-to-release',
       name: '/posts/farrellyfilm-case-study-from-mvp-to-release',
-      id: 15,
+      id: 13,
     },
     {
       url: 'https://thefarrelly.com/posts/farrellyfilm-is-live',
       name: '/posts/farrellyfilm-is-live',
-      id: 16,
+      id: 14,
     },
     {
       url: 'https://thefarrelly.com/posts/the-react-compiler-is-out',
       name: '/posts/the-react-compiler-is-out',
-      id: 17,
+      id: 15,
     },
     {
       url: 'https://thefarrelly.com/posts/understanding-the-role-of-tech-lead',
       name: '/posts/understanding-the-role-of-tech-lead',
-      id: 18,
+      id: 16,
     },
     {
       url: 'https://thefarrelly.com/posts/the-public-private-message-problem',
       name: '/posts/the-public-private-message-problem',
-      id: 19,
+      id: 17,
     },
     {
       url: 'https://thefarrelly.com/posts/should-i-be-using-rem-or-px',
       name: '/posts/should-i-be-using-rem-or-px',
-      id: 20,
+      id: 18,
     },
     {
       url: 'https://thefarrelly.com/posts/saying-i-dont-know-is-a-green-flag',
       name: '/posts/saying-i-dont-know-is-a-green-flag',
-      id: 21,
+      id: 19,
     },
     {
       url: 'https://thefarrelly.com/posts/lets-tackle-it-when-its-a-problem',
       name: '/posts/lets-tackle-it-when-its-a-problem',
-      id: 22,
+      id: 20,
     },
     {
       url: 'https://thefarrelly.com/posts/the-pipeline-your-arbiter-of-truth',
       name: '/posts/the-pipeline-your-arbiter-of-truth',
-      id: 23,
+      id: 21,
     },
     {
       url: 'https://thefarrelly.com/posts/dont-be-a-git-just-get-going',
       name: '/posts/dont-be-a-git-just-get-going',
-      id: 24,
+      id: 22,
     },
     {
       url: 'https://thefarrelly.com/posts/communication-is-key-gifs-are-your-friend',
       name: '/posts/communication-is-key-gifs-are-your-friend',
-      id: 25,
+      id: 23,
     },
     {
       url: 'https://thefarrelly.com/posts/mob-review',
       name: '/posts/mob-review',
-      id: 26,
+      id: 24,
     },
     {
       url: 'https://thefarrelly.com/posts/intermediate-ego-a-cautionary-tale-of-career-growth-and-ego',
       name: '/posts/intermediate-ego-a-cautionary-tale-of-career-growth-and-ego',
-      id: 27,
+      id: 25,
     },
     {
       url: 'https://thefarrelly.com/posts/what-ive-found-helps-form-team-culture',
       name: '/posts/what-ive-found-helps-form-team-culture',
-      id: 28,
+      id: 26,
     },
     {
       url: 'https://thefarrelly.com/posts/chatgpt-will-lie-to-you',
       name: '/posts/chatgpt-will-lie-to-you',
-      id: 29,
+      id: 27,
     },
     {
       url: 'https://thefarrelly.com/posts/web-scraping-basics-with-puppeteer',
       name: '/posts/web-scraping-basics-with-puppeteer',
-      id: 30,
+      id: 28,
     },
     {
       url: 'https://thefarrelly.com/posts/the-last-google-image-search',
       name: '/posts/the-last-google-image-search',
-      id: 31,
+      id: 29,
     },
     {
       url: 'https://thefarrelly.com/posts/developers-are-sensitive-review-with-caution',
       name: '/posts/developers-are-sensitive-review-with-caution',
-      id: 32,
+      id: 30,
     },
     {
       url: 'https://thefarrelly.com/posts/react-react-native-monorepo-with-yarn',
       name: '/posts/react-react-native-monorepo-with-yarn',
-      id: 33,
+      id: 31,
     },
     {
       url: 'https://thefarrelly.com/posts/programming-tests-dont-have-to-suck',
       name: '/posts/programming-tests-dont-have-to-suck',
-      id: 34,
+      id: 32,
     },
     {
       url: 'https://thefarrelly.com/posts/git-tags-standard-and-somewhat-unnecessary',
       name: '/posts/git-tags-standard-and-somewhat-unnecessary',
-      id: 35,
+      id: 33,
     },
     {
       url: 'https://thefarrelly.com/posts/designing-the-perfect-programming-test',
       name: '/posts/designing-the-perfect-programming-test',
-      id: 36,
+      id: 34,
     },
     {
       url: 'https://thefarrelly.com/posts/now-that-ive-made-too-many-promises-how-can-i-keep-them-all',
       name: '/posts/now-that-ive-made-too-many-promises-how-can-i-keep-them-all',
-      id: 37,
+      id: 35,
     },
     {
       url: 'https://thefarrelly.com/posts/it-started-with-a-promise',
       name: '/posts/it-started-with-a-promise',
-      id: 38,
+      id: 36,
     },
     {
       url: 'https://thefarrelly.com/posts/an-overly-enthusiastic-developer-machine-learning-and-a-Twitter-bot',
       name: '/posts/an-overly-enthusiastic-developer-machine-learning-and-a-Twitter-bot',
+      id: 37,
+    },
+    {
+      url: 'https://thefarrelly.com/projects/farrelly-film/privacy-policy',
+      name: '/projects/farrelly-film/privacy-policy',
+      id: 38,
+    },
+    {
+      url: 'https://thefarrelly.com/projects/snipit/privacy-policy',
+      name: '/projects/snipit/privacy-policy',
       id: 39,
     },
   ],
@@ -196,9 +200,9 @@ export const dataset: GraphData<WebNode, LinkNode> = {
     {source: 1, target: 4},
     {source: 3, target: 5},
     {source: 3, target: 6},
-    {source: 5, target: 7},
-    {source: 6, target: 8},
-    {source: 3, target: 9},
+    {source: 3, target: 7},
+    {source: 2, target: 8},
+    {source: 2, target: 9},
     {source: 2, target: 10},
     {source: 2, target: 11},
     {source: 2, target: 12},
@@ -227,7 +231,7 @@ export const dataset: GraphData<WebNode, LinkNode> = {
     {source: 2, target: 35},
     {source: 2, target: 36},
     {source: 2, target: 37},
-    {source: 2, target: 38},
-    {source: 2, target: 39},
+    {source: 5, target: 38},
+    {source: 6, target: 39},
   ],
 };
