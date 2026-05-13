@@ -1,7 +1,7 @@
 /**
  * Combines all components into an exportable graph.
  */
-import {useEffect, useRef} from 'react';
+import {useEffect, useMemo, useRef} from 'react';
 import type {ForceGraphMethods, GraphData, NodeObject} from 'react-force-graph-3d';
 
 import {ADD_NODE_SPEED, FADE_TIME} from '../constants.ts';
@@ -42,7 +42,10 @@ export const FarrellyGraph = ({
   },
   onReady,
 }: FarrellyGraphProps) => {
-  const graphQueue: GraphQueue = buildGraphQueue(graphData, {start: '#FF99DD', stop: '#9AD7FD'});
+  const graphQueue: GraphQueue = useMemo(
+    () => buildGraphQueue(graphData, {start: '#FF99DD', stop: '#9AD7FD'}),
+    [graphData],
+  );
 
   const maxDimensions =
     config?.height && config?.width ? {height: config.height, width: config.width} : undefined;

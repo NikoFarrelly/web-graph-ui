@@ -32,8 +32,8 @@ export const useGraph = (
   playbackFrom: 'start' | 'end',
 ) => {
   // ref + setup
-  const intervalRef = useRef<number>(0);
-  const orbitRef = useRef<number>(0);
+  const intervalRef = useRef<NodeJS.Timeout>(null);
+  const orbitRef = useRef<NodeJS.Timeout>(null);
   const angleOrbitRef = useRef<number>(0);
   // data
   const [graphData, setGraphData] = useState<GraphQueueItem>(
@@ -51,7 +51,6 @@ export const useGraph = (
     const currentPos = graphRef.current.camera().position;
     angleOrbitRef.current = Math.atan2(currentPos.x, currentPos.z);
 
-    // @ts-expect-error TODO resolve tsconfig error
     orbitRef.current = setInterval(() => {
       if (graphRef.current) {
         graphRef.current.cameraPosition({
@@ -65,7 +64,7 @@ export const useGraph = (
   }, [graphRef]);
 
   const orbitStationary = () => {
-    clearInterval(orbitRef.current);
+    if (orbitRef.current) clearInterval(orbitRef.current);
     setOrbit(OrbitEnum.Stationary);
   };
 
@@ -76,7 +75,7 @@ export const useGraph = (
   }, [graphRef, orbiting]);
 
   const finished = useCallback(() => {
-    clearInterval(intervalRef.current);
+    if (intervalRef.current) clearInterval(intervalRef.current);
     setPlayback(PlaybackEnum.Finished);
     shouldPlay = true;
     count = 0;
@@ -88,7 +87,6 @@ export const useGraph = (
     setPlayback(PlaybackEnum.Playing);
 
     if (!shouldPlay) return;
-    // @ts-expect-error TODO resolve this
     intervalRef.current = setInterval(() => {
       // adding to graph
       if (count < countMax) {
@@ -100,11 +98,10 @@ export const useGraph = (
       }
     }, nodeInterval);
     shouldPlay = false;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [countMax, finished, graphQueue, nodeInterval]);
 
   const paused = useCallback(() => {
-    clearInterval(intervalRef.current);
+    if (intervalRef.current) clearInterval(intervalRef.current);
     delayedOrbiting();
     setPlayback(PlaybackEnum.Paused);
     shouldPlay = true;
@@ -112,7 +109,7 @@ export const useGraph = (
 
   const restarting = useCallback(() => {
     clearInterval(angleOrbitRef.current);
-    clearInterval(orbitRef.current);
+    if (orbitRef.current) clearInterval(orbitRef.current);
     playing();
   }, [playing]);
 
@@ -148,6 +145,7 @@ export const useGraph = (
   useEffect(() => {
     if (!hasMounted && beginPlayback) {
       if (playbackFrom === 'start') {
+        // this will only run once, and deps don't include state.
         // eslint-disable-next-line react-hooks/set-state-in-effect
         playing();
       } else if (playbackFrom === 'end') {
