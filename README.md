@@ -1,7 +1,7 @@
 # web-graph-ui
 
 Provides a single component export, [FarrellyGraph](src/components/FarrellyGraph.tsx). Given data and props, a 3D graph
-node (courtesy of react-force-graph) network will be created. Showing the links between nodes in the network.
+node (courtesy of [react-force-graph-3d](https://github.com/vasturiano/react-force-graph)) network will be created. Showing the links between nodes in the network.
 
 Two playback modes are provided, 'start' and 'end'.
 
@@ -9,7 +9,7 @@ Two playback modes are provided, 'start' and 'end'.
     - first node will be the base URL, i.e thefarrelly.com.
     - subsequent nodes will be added every 500ms, until all nodes have been represented.
 - *end*
-    - all nodes will be represented immediately
+    - all nodes will be represented immediately.
 
 ## Installation
 
@@ -21,6 +21,13 @@ pnpm add web-graph-ui
 
 ### Example usage
 
+##### import
+```typescript jsx
+import FarrellyGraph from 'web-graph-ui';
+```
+*FarrellyGraph is a default export from the pkg*.
+
+##### Usage
 Start mode, begin immediately
 
 ```typescript jsx
@@ -73,7 +80,7 @@ const [playbackOption, setPlaybackOption] = useState<'start' | 'end'>();
 | beginPlayback |           boolean            |   false   | Will trigger the initial playback                                                                     | true     |
 | playbackFrom  |      'start', or 'end'       |     -     | Defines playback from first node, or entire network                                                   | true     |
 | config        |     FarrellyGraphConfig      | undefined | Config, can set width/height for the component                                                        | false    |
-| onReady       |          () => void          | undefined | Callback that fires when the component is ready                                                       | false    |
+| onReady       |          () => void          | undefined | Callback that fires when the component is ready (mounted and data loaded)                             | false    |
 
 `graphData` example structure
 ```json
@@ -100,6 +107,8 @@ const [playbackOption, setPlaybackOption] = useState<'start' | 'end'>();
   ]
 }
 ```
+
+*This follows the data structure defined by react-force-graph-3d*.
 
 ### UI Controls
 
