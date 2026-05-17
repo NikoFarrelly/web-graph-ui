@@ -1,6 +1,6 @@
 {
   "name": "@thefarrelly/web-graph-ui",
-  "private": true,
+  "private": false,
   "version": "0.2.0",
   "type": "module",
   "main": "./dist/web-graph-ui.es.js",
@@ -17,6 +17,9 @@
     "format:check": "prettier --check \"**/*.{ts,tsx}\"",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typescript": "tsc --noEmit"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "files": [
     "dist",
