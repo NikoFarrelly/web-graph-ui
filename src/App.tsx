@@ -19,21 +19,13 @@ const App = () => {
   return (
     <div className={'screen'}>
       <div
-        style={{
-          position: 'absolute',
-          top: '16px',
-          left: '16px',
-          width: '100px',
-          height: '100px',
-          backgroundColor: 'red',
-          zIndex: 9999,
-        }}
+        className={'start_modal'}
         onClick={onBeginPlayback}
       />
       <FarrellyGraph
         graphData={graphData}
         beginPlayback={beginPlayback}
-        playbackFrom={'start'}
+        playbackFrom={'end'}
         config={{width: 800, height: 600}}
       />
     </div>

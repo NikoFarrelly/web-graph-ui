@@ -33,25 +33,25 @@ export const InfoPanel = ({
 
   return (
     <div className={'info'}>
-      <div className={'info-container'}>
-        <div className="info-controls">
+      <div className={'info__container'}>
+        <div className="info__controls">
           {index >= 0 && depth >= 0 && (
-            <div className={'info-controls__info'}>
-              <div className="info-controls__item" title={`Node count: ${index}`}>
-                <p className={'info-controls__text'}>Nodes: {index}</p>
+            <div className={'info__controls-container'}>
+              <div className="info__item" title={`Node count: ${index}`}>
+                <p className={'info__text'}>Nodes: {index}</p>
               </div>
-              <div className="info-controls__item" title={`Graph depth: ${depth}`}>
-                <p className={'info-controls__text'}>Depth: {depth}</p>
+              <div className="info__item" title={`Graph depth: ${depth}`}>
+                <p className={'info__text'}>Depth: {depth}</p>
               </div>
             </div>
           )}
 
           <button
             onClick={onHide}
-            className={'info-controls__button'}
+            className={'info__button'}
             title={isVisible ? 'Hide notifications' : 'Show notifications'}
           >
-            <div className={'info-controls__inner'}>
+            <div className={'info__button-container'}>
               <img
                 src={isVisible ? NotificationsEnabled : NotificationsDisabled}
                 alt={'Notifications'}

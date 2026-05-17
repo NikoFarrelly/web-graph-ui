@@ -16,6 +16,10 @@
     padding: 16px;
 }
 
+.controls__orbit {
+    border-radius: 24px;
+}
+
 .playback-button {
     height: 58px;
     width: 58px;
@@ -104,9 +108,5 @@
     animation-duration: 7000ms;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
-    border-radius: 24px;
-}
-
-.controls__orbit {
     border-radius: 24px;
 }
