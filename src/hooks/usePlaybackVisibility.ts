@@ -25,7 +25,7 @@ const STATES: VisibilityStates = {
   HIDDEN: 'controls-hidden',
 };
 
-export interface VisibilityConfig {
+interface VisibilityConfig {
   idleTimeout?: number;
   fadeOutDuration?: number;
   fadeInDuration?: number;
