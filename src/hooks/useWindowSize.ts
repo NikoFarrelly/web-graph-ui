@@ -27,7 +27,9 @@ export function useWindowSize(
       });
     }
 
+    // set initial size
     handleResize();
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [horizontal, maxWindowSize?.height, maxWindowSize?.width, vertical]);
