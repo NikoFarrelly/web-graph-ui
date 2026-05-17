@@ -1,6 +1,7 @@
 import {type RefObject, useCallback, useEffect, useRef, useState} from 'react';
 import type {ForceGraphMethods} from 'react-force-graph-3d';
 
+import {ADD_NODE_AND_FADE, ORBIT_DELAY} from '../constants.ts';
 import {
   type GraphQueue,
   type GraphQueueItem,
@@ -13,12 +14,9 @@ import {
 const SCREEN_HEIGHT = window.innerHeight;
 const SCREEN_WIDTH = window.innerWidth;
 const isLandscape = SCREEN_HEIGHT > SCREEN_WIDTH;
-// const isPortrait = SCREEN_WIDTH > SCREEN_HEIGHT;
 
 // Distance from graph
-const DISTANCE = isLandscape ? SCREEN_HEIGHT / 2.3 : SCREEN_WIDTH / 5; //450;
-// Delay for orbit to be called & then begin
-const ORBIT_DELAY = 500;
+const DISTANCE = isLandscape ? SCREEN_HEIGHT / 2.3 : SCREEN_WIDTH / 5;
 
 let count: number = 0;
 let hasMounted: boolean = false;
@@ -27,18 +25,17 @@ let shouldPlay: boolean = true;
 export const useGraph = (
   graphQueue: GraphQueue,
   graphRef: RefObject<ForceGraphMethods | undefined>,
-  nodeInterval: number,
   beginPlayback: boolean,
   playbackFrom: 'start' | 'end',
 ) => {
-  // ref + setup
   const intervalRef = useRef<NodeJS.Timeout>(null);
   const orbitRef = useRef<NodeJS.Timeout>(null);
   const angleOrbitRef = useRef<number>(0);
-  // data
+
   const [graphData, setGraphData] = useState<GraphQueueItem>(
     playbackFrom === 'end' ? graphQueue[graphQueue.length - 1] : graphQueue[0],
   );
+
   const countMax = graphQueue.length - 1;
   const currGraphIndex = graphData?.nodes ? graphData.nodes.length : 0;
   const [playback, setPlayback] = useState<Playback>(PlaybackEnum.Paused);
@@ -47,7 +44,7 @@ export const useGraph = (
   const orbiting = useCallback(() => {
     if (!graphRef.current) return;
 
-    // if the graph has been moved, grab it's updated pos & translate for x/z
+    // graph may have been moved, grab it's updated pos & translate for x/z
     const currentPos = graphRef.current.camera().position;
     angleOrbitRef.current = Math.atan2(currentPos.x, currentPos.z);
 
@@ -70,8 +67,8 @@ export const useGraph = (
 
   const delayedOrbiting = useCallback(() => {
     if (!graphRef.current) return;
-    graphRef.current.cameraPosition({z: DISTANCE, y: -50}, undefined, ORBIT_DELAY * 4);
-    setTimeout(() => orbiting(), ORBIT_DELAY * 4);
+    graphRef.current.cameraPosition({z: DISTANCE, y: -50}, undefined, ORBIT_DELAY);
+    setTimeout(() => orbiting(), ORBIT_DELAY);
   }, [graphRef, orbiting]);
 
   const finished = useCallback(() => {
@@ -96,9 +93,9 @@ export const useGraph = (
       } else if (count === countMax) {
         finished();
       }
-    }, nodeInterval);
+    }, ADD_NODE_AND_FADE);
     shouldPlay = false;
-  }, [countMax, finished, graphQueue, nodeInterval]);
+  }, [countMax, finished, graphQueue]);
 
   const paused = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);

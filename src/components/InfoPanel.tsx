@@ -1,22 +1,26 @@
-import {useEffect, useState} from 'react';
-import type {NodeObject} from 'react-force-graph-3d';
+import { useEffect, useState } from 'react';
+import type { NodeObject } from 'react-force-graph-3d';
+
+
 
 import NotificationsEnabled from '../assets/Notifications.png';
 import NotificationsDisabled from '../assets/WhiteNotifications.png';
-import {FADE_TIME_CSS} from '../constants.ts';
-import type {WCWebNode} from '../types.ts';
+import {ADD_NODE_AND_FADE, FADE_TIME_CSS} from '../constants.ts';
+import type { WCWebNode } from '../types.ts';
 import './InfoPanel.css';
+
+
+
+
 
 export const InfoPanel = ({
   node,
   index,
   depth,
-  nodeSpeed,
 }: {
   index: number;
   depth: number;
   node: NodeObject<WCWebNode> | undefined;
-  nodeSpeed: number;
 }) => {
   const [isVisible, setIsVisible] = useState(true);
 
@@ -59,7 +63,7 @@ export const InfoPanel = ({
           </button>
         </div>
 
-        <NodeInfoPanel node={node} nodeSpeed={nodeSpeed} key={index} isVisible={isVisible} />
+        <NodeInfoPanel node={node} key={index} isVisible={isVisible} />
       </div>
     </div>
   );
@@ -67,20 +71,18 @@ export const InfoPanel = ({
 
 const NodeInfoPanel = ({
   node,
-  nodeSpeed,
   isVisible,
 }: {
   node: NodeObject;
-  nodeSpeed: number;
   isVisible: boolean;
 }) => {
   const [phase, setPhase] = useState<'enter' | 'exit' | 'hidden'>(!isVisible ? 'hidden' : 'enter');
 
   useEffect(() => {
     if (phase === 'hidden') return;
-    const exitTimer = setTimeout(() => setPhase('exit'), nodeSpeed - FADE_TIME_CSS);
+    const exitTimer = setTimeout(() => setPhase('exit'), ADD_NODE_AND_FADE - FADE_TIME_CSS);
     return () => clearTimeout(exitTimer);
-  }, [isVisible, nodeSpeed, phase]);
+  }, [isVisible,  phase]);
 
   if (phase === 'hidden') return null;
 
