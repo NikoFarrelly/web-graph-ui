@@ -1,7 +1,8 @@
 # web-graph-ui
 
 Provides a single component export, [FarrellyGraph](src/components/FarrellyGraph.tsx). Given data and props, a 3D graph
-node (courtesy of [react-force-graph-3d](https://github.com/vasturiano/react-force-graph)) network will be created. Showing the links between nodes in the network.
+node (courtesy of [react-force-graph-3d](https://github.com/vasturiano/react-force-graph)) network will be created.
+Showing the links between nodes in the network.
 
 Two playback modes are provided, 'start' and 'end'.
 
@@ -22,12 +23,15 @@ pnpm add web-graph-ui
 ### Example usage
 
 ##### import
+
 ```typescript jsx
 import FarrellyGraph from 'web-graph-ui';
 ```
+
 *FarrellyGraph is a default export from the pkg*.
 
 ##### Usage
+
 Start mode, begin immediately
 
 ```typescript jsx
@@ -52,8 +56,8 @@ End mode, begin immediately
 
 However, you may want to delay playback. For example, you could allow the user to choose between 'start' and 'end'.
 
-- To allow the user to choose, provide either playback option ('start' | 'end') and then set `beginPlayback` to true, e.g.
-  
+- To allow the user to choose, provide either playback option ('start' | 'end') and then set `beginPlayback` to true,
+  e.g.
 
 ```typescript jsx
 const [playbackOption, setPlaybackOption] = useState<'start' | 'end'>();
@@ -83,6 +87,7 @@ const [playbackOption, setPlaybackOption] = useState<'start' | 'end'>();
 | onReady       |          () => void          | undefined | Callback that fires when the component is ready (mounted and data loaded)                             | false    |
 
 `graphData` example structure
+
 ```json
 {
   "nodes": [
@@ -108,7 +113,8 @@ const [playbackOption, setPlaybackOption] = useState<'start' | 'end'>();
 }
 ```
 
-*This follows the data structure defined by react-force-graph-3d*.
+*This follows the [data structure](https://github.com/vasturiano/react-force-graph#input-json-syntax) defined by
+react-force-graph-3d*.
 
 ### UI Controls
 
