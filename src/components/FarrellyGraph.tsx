@@ -66,7 +66,14 @@ export const FarrellyGraph = ({
 
   return (
     <div {...controlsProps}>
-      {beginPlayback && <InfoPanel node={currNode} depth={currDepth} index={currGraphIndex} />}
+      {beginPlayback && (
+        <InfoPanel
+          node={currNode}
+          depth={currDepth}
+          index={currGraphIndex}
+          dimensions={dimensions}
+        />
+      )}
       {dimensions && (
         <Graph
           graphData={beginPlayback ? currGraphData : undefined}

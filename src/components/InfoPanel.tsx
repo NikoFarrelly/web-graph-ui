@@ -1,26 +1,22 @@
-import { useEffect, useState } from 'react';
-import type { NodeObject } from 'react-force-graph-3d';
-
-
+import {useEffect, useState} from 'react';
+import type {NodeObject} from 'react-force-graph-3d';
 
 import NotificationsEnabled from '../assets/Notifications.png';
 import NotificationsDisabled from '../assets/WhiteNotifications.png';
 import {ADD_NODE_AND_FADE, FADE_TIME_CSS} from '../constants.ts';
-import type { WCWebNode } from '../types.ts';
+import type {Dimensions, WCWebNode} from '../types.ts';
 import './InfoPanel.css';
-
-
-
-
 
 export const InfoPanel = ({
   node,
   index,
   depth,
+  dimensions,
 }: {
   index: number;
   depth: number;
   node: NodeObject<WCWebNode> | undefined;
+  dimensions?: Dimensions;
 }) => {
   const [isVisible, setIsVisible] = useState(true);
 
@@ -32,16 +28,18 @@ export const InfoPanel = ({
   const onHide = () => setIsVisible(prev => !prev);
 
   return (
-    <div className={'info'}>
+    <div className={'info'} style={{width: dimensions?.width ?? '100%'}}>
       <div className={'info__container'}>
         <div className="info__controls">
           {index >= 0 && depth >= 0 && (
             <div className={'info__controls-container'}>
               <div className="info__item" title={`Node count: ${index}`}>
-                <p className={'info__text'}>Nodes: {index}</p>
+                <p className={'info__text'}>Nodes:</p>
+                <p className={'info__text'}>{index}</p>
               </div>
               <div className="info__item" title={`Graph depth: ${depth}`}>
-                <p className={'info__text'}>Depth: {depth}</p>
+                <p className={'info__text'}>Depth:</p>
+                <p className={'info__text'}>{depth}</p>
               </div>
             </div>
           )}
@@ -69,20 +67,14 @@ export const InfoPanel = ({
   );
 };
 
-const NodeInfoPanel = ({
-  node,
-  isVisible,
-}: {
-  node: NodeObject;
-  isVisible: boolean;
-}) => {
+const NodeInfoPanel = ({node, isVisible}: {node: NodeObject; isVisible: boolean}) => {
   const [phase, setPhase] = useState<'enter' | 'exit' | 'hidden'>(!isVisible ? 'hidden' : 'enter');
 
   useEffect(() => {
     if (phase === 'hidden') return;
     const exitTimer = setTimeout(() => setPhase('exit'), ADD_NODE_AND_FADE - FADE_TIME_CSS);
     return () => clearTimeout(exitTimer);
-  }, [isVisible,  phase]);
+  }, [isVisible, phase]);
 
   if (phase === 'hidden') return null;
 

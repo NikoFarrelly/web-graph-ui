@@ -40,6 +40,11 @@ export type FarrellyGraphConfig = {
   height: number;
 };
 
+export type Dimensions = {
+  width: number;
+  height: number;
+};
+
 export type VisibilityState =
   | 'controls-visible'
   | 'controls-fading-in'
