@@ -131,3 +131,12 @@ react-force-graph-3d*.
     - `pnpm i`
 3. run dev.
     - `pnpm dev`, or `pnpm start`
+
+## Publish
+Make sure you've bumped the package version first, then you can proceed.
+
+1. Login: `pnpm login`
+    - Will prompt you to login via browser.
+2. Publish: `pnpm publish`
+    - It will build, then publish to npm.
+3. Confirm: Visit [web-graph-ui](https://www.npmjs.com/package/@thefarrelly/web-graph-ui) and confirm the publish has gone live.
