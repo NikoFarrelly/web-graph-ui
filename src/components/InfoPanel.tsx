@@ -4,7 +4,7 @@ import type {NodeObject} from 'react-force-graph-3d';
 import NotificationsEnabled from '../assets/Notifications.png';
 import NotificationsDisabled from '../assets/WhiteNotifications.png';
 import {ADD_NODE_AND_FADE, FADE_TIME_CSS} from '../constants.ts';
-import type {Dimensions, WCWebNode} from '../types.ts';
+import {type Dimensions, type Playback, PlaybackEnum, type WCWebNode} from '../types.ts';
 import './InfoPanel.css';
 
 export const InfoPanel = ({
@@ -12,11 +12,13 @@ export const InfoPanel = ({
   index,
   depth,
   dimensions,
+  playbackState,
 }: {
   index: number;
   depth: number;
   node: NodeObject<WCWebNode> | undefined;
   dimensions?: Dimensions;
+  playbackState: Playback;
 }) => {
   const [isVisible, setIsVisible] = useState(true);
 
@@ -61,14 +63,18 @@ export const InfoPanel = ({
           </button>
         </div>
 
-        <NodeInfoPanel node={node} key={index} isVisible={isVisible} />
+        <NodeInfoPanel
+          node={node}
+          key={index}
+          isVisible={isVisible && playbackState === PlaybackEnum.Playing}
+        />
       </div>
     </div>
   );
 };
 
 const NodeInfoPanel = ({node, isVisible}: {node: NodeObject; isVisible: boolean}) => {
-  const [phase, setPhase] = useState<'enter' | 'exit' | 'hidden'>(!isVisible ? 'hidden' : 'enter');
+  const [phase, setPhase] = useState<'enter' | 'exit' | 'hidden'>(isVisible ? 'enter' : 'hidden');
 
   useEffect(() => {
     if (phase === 'hidden') return;

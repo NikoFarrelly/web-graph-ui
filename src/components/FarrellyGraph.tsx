@@ -72,6 +72,7 @@ export const FarrellyGraph = ({
           depth={currDepth}
           index={currGraphIndex}
           dimensions={dimensions}
+          playbackState={playbackState}
         />
       )}
       {dimensions && (
