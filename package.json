@@ -12,7 +12,7 @@
     "start": "vite",
     "build": "vite build && cp -n src/web-graph-ui.d.ts dist/",
     "lint": "eslint .",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist/ node_modules/",
     "preview": "vite preview",
     "format:check": "prettier --check \"**/*.{ts,tsx}\"",
     "format": "prettier --write \"**/*.{ts,tsx}\"",

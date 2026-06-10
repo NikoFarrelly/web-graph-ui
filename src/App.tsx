@@ -18,10 +18,7 @@ const App = () => {
 
   return (
     <div className={'screen'}>
-      <div
-        className={'start_modal'}
-        onClick={onBeginPlayback}
-      />
+      <div className={'start_modal'} onClick={onBeginPlayback} />
       <FarrellyGraph
         graphData={graphData}
         beginPlayback={beginPlayback}
